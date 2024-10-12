@@ -1,0 +1,37 @@
+@if (this.customer$ | async; as customer) {
+    <div>
+        <h1>Orders for {{ customer.name | capitalize }}</h1>
+
+        <table class="table table-hover orders-table">
+            @for (order of orders$ | async; track order.customerId) {
+                @for (orderItem of order.orderItems; track orderItem.id; let isOdd=$odd) {
+                    <tr [class.odd]="isOdd">
+                        <td>{{ orderItem.productName }}</td>
+                        <td>{{ orderItem.itemCost | currency:'USD':'symbol' }}</td>    
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+}
+@else {
+    <div>
+        No customer found
+    </div>  
+}
+
+@switch ((this.customer$ | async)?.city) {
+    @case ('New York') {
+        <!-- New York -->
+    }
+    @case ('Phoenix') {
+        <!-- Phoenix -->
+    }
+    @default {
+        <!-- Default -->
+    }
+}
+
+<br />
+<a routerLink="/customers">View All Customers</a>
+
